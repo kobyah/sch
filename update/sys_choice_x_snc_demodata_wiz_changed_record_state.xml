@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_choice action="INSERT_OR_UPDATE" field="state" table="x_snc_demodata_wiz_changed_record" version="3">
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>state</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Successful</label>
+            <language>en</language>
+            <name>x_snc_demodata_wiz_changed_record</name>
+            <sequence>0</sequence>
+            <sys_created_by>chris.webster</sys_created_by>
+            <sys_created_on>2019-02-13 18:31:54</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>aa5019a2dbe7a7001e22c24505961923</sys_id>
+            <sys_mod_count>2</sys_mod_count>
+            <sys_updated_by>chris.webster</sys_updated_by>
+            <sys_updated_on>2019-02-13 18:32:03</sys_updated_on>
+            <value>successful</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>state</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Failed</label>
+            <language>en</language>
+            <name>x_snc_demodata_wiz_changed_record</name>
+            <sequence>1</sequence>
+            <sys_created_by>chris.webster</sys_created_by>
+            <sys_created_on>2019-02-13 18:32:00</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>906019a2dbe7a7001e22c245059619da</sys_id>
+            <sys_mod_count>2</sys_mod_count>
+            <sys_updated_by>chris.webster</sys_updated_by>
+            <sys_updated_on>2019-02-13 18:32:04</sys_updated_on>
+            <value>failed</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>state</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>No Change</label>
+            <language>en</language>
+            <name>x_snc_demodata_wiz_changed_record</name>
+            <sequence>2</sequence>
+            <sys_created_by>chris.webster</sys_created_by>
+            <sys_created_on>2019-02-13 20:09:11</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>93b25d26dbe7a7001e22c24505961983</sys_id>
+            <sys_mod_count>3</sys_mod_count>
+            <sys_updated_by>chris.webster</sys_updated_by>
+            <sys_updated_on>2019-02-13 20:09:19</sys_updated_on>
+            <value>no change</value>
+        </sys_choice>
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>state</element>
+            <name>x_snc_demodata_wiz_changed_record</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>chris.webster</sys_created_by>
+            <sys_created_on>2019-02-13 18:31:54</sys_created_on>
+            <sys_id>dfccd1f3db64b30085e15561ca9619ac</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>state</sys_name>
+            <sys_package display_value="Demo Data Wizard" source="x_snc_demodata_wiz">e0d72f74dba7a3001e22c24505961989</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Demo Data Wizard">e0d72f74dba7a3001e22c24505961989</sys_scope>
+            <sys_update_name>sys_choice_x_snc_demodata_wiz_changed_record_state</sys_update_name>
+            <sys_updated_by>chris.webster</sys_updated_by>
+            <sys_updated_on>2019-02-13 18:31:54</sys_updated_on>
+        </sys_choice_set>
+    </sys_choice>
+</record_update>

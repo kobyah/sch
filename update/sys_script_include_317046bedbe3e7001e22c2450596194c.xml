@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>public</access>
+        <active>true</active>
+        <api_name>x_snc_demodata_wiz.api</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description>Public callable APIs for Demo Data Wizard</description>
+        <name>api</name>
+        <script><![CDATA[var api = Class.create();
+api.prototype = {
+    initialize: function() {
+    },
+	firstRunSetup: function( dataset_id , numDays ){
+		dataset_id = dataset_id || '35f9b5aedb636700736377096896195c'; // FSM data set
+		var util = new x_snc_demodata_wiz.util();
+		return util.firstRunSetup(dataset_id , numDays);
+	},
+    type: 'api'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>chris.webster</sys_created_by>
+        <sys_created_on>2019-02-14 16:42:52</sys_created_on>
+        <sys_id>317046bedbe3e7001e22c2450596194c</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>api</sys_name>
+        <sys_package display_value="Demo Data Wizard" source="x_snc_demodata_wiz">e0d72f74dba7a3001e22c24505961989</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Demo Data Wizard">e0d72f74dba7a3001e22c24505961989</sys_scope>
+        <sys_update_name>sys_script_include_317046bedbe3e7001e22c2450596194c</sys_update_name>
+        <sys_updated_by>chris.webster</sys_updated_by>
+        <sys_updated_on>2019-02-15 19:51:24</sys_updated_on>
+    </sys_script_include>
+</record_update>

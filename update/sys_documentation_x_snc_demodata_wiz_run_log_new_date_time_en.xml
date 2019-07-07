@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="new_date_time" label="New base date/time" language="en" table="x_snc_demodata_wiz_run_log">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>new_date_time</element>
+            <help/>
+            <hint/>
+            <label>New base date/time</label>
+            <language>en</language>
+            <name>x_snc_demodata_wiz_run_log</name>
+            <plural>New base date/times</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>chris.webster</sys_created_by>
+            <sys_created_on>2019-02-08 19:25:02</sys_created_on>
+            <sys_id>fd9ca37cdba7a3001e22c2450596195b</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>New base date/time</sys_name>
+            <sys_package display_value="Demo Data Wizard" source="x_snc_demodata_wiz">e0d72f74dba7a3001e22c24505961989</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Demo Data Wizard">e0d72f74dba7a3001e22c24505961989</sys_scope>
+            <sys_update_name>sys_documentation_x_snc_demodata_wiz_run_log_new_date_time_en</sys_update_name>
+            <sys_updated_by>chris.webster</sys_updated_by>
+            <sys_updated_on>2019-02-08 19:25:02</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

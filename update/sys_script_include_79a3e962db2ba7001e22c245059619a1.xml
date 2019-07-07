@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_snc_demodata_wiz.util</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>util</name>
+        <script><![CDATA[var util = Class.create();
+util.prototype = {
+    initialize: function() {
+    },
+	TBL_collection: 'x_snc_demodata_wiz_data_set',
+	TBL_collection_table: 'x_snc_demodata_wiz_data_set_table',
+	TBL_warp: 'x_snc_demodata_wiz_run_log',
+	TBL_changed_rec: 'x_snc_demodata_wiz_changed_record',
+	DICT_ELEMENT: 'element',
+	F_BASE_DT: 'base_date_time', // field on TBL_collection
+	F_COLLECTION: 'data_set',
+	F_FIELDS: 'fields',
+	F_TABLE: 'table',
+	F_CONDITIONS: 'condition',
+	F_START: 'run_start_on',
+	F_END: 'run_end_on',
+	F_ORDER: 'order',
+	F_BASE_TABLE: 'base_table',
+	F_BASE_DT_FIELD: 'base_dt_field',
+	F_NEW_BASE_DT: 'new_date_time', // field on TBL_warp
+	F_DOC_ID: 'document_id',
+	F_STATE: 'state',
+	F_WIZ_RUN: 'wizard_run',
+	STR_SUCCESS: 'successful',
+	STR_FAIL: 'failure',
+	STR_IN_PROGRESS: 'in progress',
+	STR_COMPLETE: 'complete',
+	
+	createTableMap: function( dataset_sys_id ){
+		var coll = new GlideRecord( this.TBL_collection );
+		coll.get(dataset_sys_id);
+		
+		var gr = new GlideRecord( this.TBL_collection_table );
+		gr.newRecord();
+		gr.setValue( this.F_COLLECTION , dataset_sys_id );
+		gr.setValue( this.F_TABLE , coll.getValue( this.F_BASE_TABLE ));
+		gr.setValue( this.F_FIELDS , coll[this.F_BASE_DT_FIELD].getRefRecord().getValue( this.DICT_ELEMENT ) );
+		gr.setValue( this.F_ORDER , '100');
+		return gr.insert();
+	},
+	firstRunSetup: function( dataset_id , numDays ){
+		dataset_id = dataset_id || '35f9b5aedb636700736377096896195c'; // FSM data set
+		var days = parseInt(numDays || 3);
+		if( days <= 0 )
+			days = 3;
+		
+//		var gdt = new GlideDateTime( gs.beginningOfNextWeek() ); 
+		var gdt = new GlideDateTime();
+		gdt.addDaysLocalTime( days );
+
+		var gr = new GlideRecord( this.TBL_warp );
+		gr.newRecord();
+		gr.setValue( this.F_COLLECTION , dataset_id );
+		gr.setValue( this.F_NEW_BASE_DT , gdt.getLocalDate() + ' 00:00:00');
+		var id = gr.insert();
+		return id;
+	},
+	runWizard: function( run_sys_id ){
+		// here we stand up the wormhole and push the records through it 
+		var current = new GlideRecord( this.TBL_warp );
+		current.get( run_sys_id );
+		var Collection = current.getValue( this.F_COLLECTION );
+		var dt = current.getValue( this.F_NEW_BASE_DT );
+		var gdt = new GlideDateTime( dt );
+		var DestinationTime = gdt.getLocalDate() + ' ' + gdt.getInternalFormattedLocalTime() ;
+		var wh = new x_snc_demodata_wiz.wizard( Collection , DestinationTime );
+		wh.setWarp( current.getUniqueValue() );
+		wh.transform();
+	},
+    type: 'util'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>chris.webster</sys_created_by>
+        <sys_created_on>2019-02-13 19:59:07</sys_created_on>
+        <sys_id>79a3e962db2ba7001e22c245059619a1</sys_id>
+        <sys_mod_count>10</sys_mod_count>
+        <sys_name>util</sys_name>
+        <sys_package display_value="Demo Data Wizard" source="x_snc_demodata_wiz">e0d72f74dba7a3001e22c24505961989</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Demo Data Wizard">e0d72f74dba7a3001e22c24505961989</sys_scope>
+        <sys_update_name>sys_script_include_79a3e962db2ba7001e22c245059619a1</sys_update_name>
+        <sys_updated_by>chris.webster</sys_updated_by>
+        <sys_updated_on>2019-02-15 19:50:56</sys_updated_on>
+    </sys_script_include>
+</record_update>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element attributes="update_synch=true" extends="sys_metadata" label="Data Set" max_length="40" name="x_snc_demodata_wiz_data_set" type="collection">
+        <element attributes="edge_encryption_enabled=true" default="true" label="Active" max_length="40" name="active" type="boolean"/>
+        <element attributes="edge_encryption_enabled=true,ref_qual_elements=base_table" choice="3" dependent="base_table" dependent_on_field="base_table" label="Base date/time field" max_length="32" name="base_dt_field" reference="sys_dictionary" reference_qual="javascript:var t=new GlideTableHierarchy(current.base_table); &quot;element!=NULL^internal_type=glide_date_time^nameIN&quot; + t.getTables(); " type="reference" use_dependent_field="true" use_reference_qualifier="advanced">
+            <choice/>
+        </element>
+        <element attributes="base_start=true,edge_encryption_enabled=true" label="Base table" mandatory="true" max_length="80" name="base_table" type="table_name"/>
+        <element label="Description" max_length="2000" name="description" type="string"/>
+        <element display="true" label="Name" mandatory="true" max_length="100" name="name" type="string"/>
+        <index name="index">
+            <element name="base_dt_field"/>
+        </index>
+    </element>
+</database>

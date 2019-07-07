@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Wizard Run" max_length="40" name="x_snc_demodata_wiz_run_log" type="collection">
+        <element attributes="edge_encryption_enabled=true" choice="3" label="Data Set" mandatory="true" max_length="32" name="data_set" reference="x_snc_demodata_wiz_data_set" type="reference">
+            <choice/>
+        </element>
+        <element label="New base date/time" mandatory="true" max_length="40" name="new_date_time" type="glide_date_time"/>
+        <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
+        <element label="Run end" max_length="40" name="run_end_on" type="glide_date_time"/>
+        <element label="Run start" max_length="40" name="run_start_on" type="glide_date_time"/>
+        <element attributes="edge_encryption_enabled=true" choice="1" default="pending" label="State" mandatory="true" max_length="40" name="state" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Pending" sequence="1" value="pending"/>
+                <element inactive_on_update="false" label="In Progress" sequence="2" value="in progress"/>
+                <element inactive_on_update="false" label="Complete" sequence="3" value="complete"/>
+            </choice>
+        </element>
+        <index name="index">
+            <element name="data_set"/>
+        </index>
+    </element>
+</database>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Changed Record" max_length="40" name="x_snc_demodata_wiz_changed_record" type="collection">
+        <element attributes="edge_encryption_enabled=true" dependent="table" dependent_on_field="table" label="Record" max_length="32" name="document_id" type="document_id" use_dependent_field="true"/>
+        <element attributes="edge_encryption_enabled=true" choice="3" label="State" max_length="40" name="state" type="choice">
+            <choice>
+                <element inactive_on_update="false" label="Successful" sequence="0" value="successful"/>
+                <element inactive_on_update="false" label="Failed" sequence="1" value="failed"/>
+                <element inactive_on_update="false" label="No Change" sequence="2" value="no change"/>
+            </choice>
+        </element>
+        <element label="Table" max_length="40" name="table" type="string"/>
+        <element attributes="edge_encryption_enabled=true" label="Wizard Run" max_length="32" name="wizard_run" reference="x_snc_demodata_wiz_run_log" type="reference"/>
+        <index name="index">
+            <element name="wizard_run"/>
+        </index>
+        <index name="index2">
+            <element name="document_id"/>
+        </index>
+    </element>
+</database>

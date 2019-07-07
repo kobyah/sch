@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sc_cat_item_producer">
+    <sc_cat_item_producer action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <availability>on_desktop</availability>
+        <billable>false</billable>
+        <can_cancel>false</can_cancel>
+        <category/>
+        <cost>0</cost>
+        <custom_cart/>
+        <delivery_plan display_value="DEFAULT">523da512c611228900811a37c97c2014</delivery_plan>
+        <delivery_plan_script/>
+        <delivery_time>1970-01-03 00:00:00</delivery_time>
+        <description><![CDATA[<p>Even the best demo data can become stale quickly. This tool allows you to freshen up the demo data on this instance, updating the dates on key date/time fields, making the demo data more timely and relevant.</p>
+<p>For best results:</p>
+<ol style="list-style-position: inside;"><li>Select your desired <strong>Data Set.</strong>
+<ul><li>This wizard is in early release: if your desired data set is not listed, the wizard isn&#39;t configured to work on it.</li></ul>
+</li><li>Using the datepicker, choose a <strong>New Date</strong> (the time doesn&#39;t matter) that is within a few days of your demo or other important date. </li><li>Submit, and the demo data will be transformed within moments!</li></ol>
+<p><strong>Please note:</strong> time values entered into the New Date field will be ignored; <strong>only the date part of date/time fields will be changed</strong>.</p>
+<ul style="list-style-position: inside;"><li>Due to periodic differences in local time zones (e.g. daylight saving time), the <em>displayed</em> time value may appear to change, depending on the date selected. </li></ul>]]></description>
+        <entitlement_script/>
+        <group/>
+        <hide_sp>false</hide_sp>
+        <icon/>
+        <ignore_price>false</ignore_price>
+        <image/>
+        <list_price>0</list_price>
+        <location/>
+        <mandatory_attachment>false</mandatory_attachment>
+        <meta/>
+        <mobile_hide_price>false</mobile_hide_price>
+        <mobile_picture/>
+        <mobile_picture_type>use_desktop_picture</mobile_picture_type>
+        <model/>
+        <name>Date Wizard</name>
+        <no_attachment_v2>false</no_attachment_v2>
+        <no_cart>false</no_cart>
+        <no_cart_v2>false</no_cart_v2>
+        <no_delivery_time_v2>false</no_delivery_time_v2>
+        <no_order>false</no_order>
+        <no_order_now>false</no_order_now>
+        <no_proceed_checkout>false</no_proceed_checkout>
+        <no_quantity>false</no_quantity>
+        <no_quantity_v2>false</no_quantity_v2>
+        <no_search>false</no_search>
+        <no_wishlist_v2>false</no_wishlist_v2>
+        <omit_price>false</omit_price>
+        <order>0</order>
+        <ordered_item_link/>
+        <picture/>
+        <post_insert_script/>
+        <preview>JavaScript: popupOpenStandard("com.glideapp.servicecatalog_cat_item_view.do?v=1&amp;sysparm_id=c4c43b34dbe7a3001e22c2450596191c&amp;sysparm_preview=true", "summary");</preview>
+        <price>0</price>
+        <recurring_frequency/>
+        <recurring_price>0</recurring_price>
+        <redirect_url>generated_record</redirect_url>
+        <request_method/>
+        <roles>snc_internal</roles>
+        <sc_catalogs/>
+        <sc_ic_item_staging/>
+        <sc_ic_version/>
+        <script/>
+        <short_description>Shift demo data to a new time period, quickly and easily!</short_description>
+        <show_variable_help_on_load>false</show_variable_help_on_load>
+        <start_closed>false</start_closed>
+        <sys_class_name>sc_cat_item_producer</sys_class_name>
+        <sys_created_by>chris.webster</sys_created_by>
+        <sys_created_on>2019-02-08 20:00:41</sys_created_on>
+        <sys_id>c4c43b34dbe7a3001e22c2450596191c</sys_id>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>Date Wizard</sys_name>
+        <sys_package display_value="Demo Data Wizard" source="x_snc_demodata_wiz">e0d72f74dba7a3001e22c24505961989</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Demo Data Wizard">e0d72f74dba7a3001e22c24505961989</sys_scope>
+        <sys_update_name>sc_cat_item_producer_c4c43b34dbe7a3001e22c2450596191c</sys_update_name>
+        <sys_updated_by>chris.webster</sys_updated_by>
+        <sys_updated_on>2019-02-14 17:43:12</sys_updated_on>
+        <table_name>x_snc_demodata_wiz_run_log</table_name>
+        <template/>
+        <type>item</type>
+        <use_sc_layout>true</use_sc_layout>
+        <vendor/>
+        <view/>
+        <visible_bundle>true</visible_bundle>
+        <visible_guide>true</visible_guide>
+        <visible_standalone>true</visible_standalone>
+        <workflow/>
+    </sc_cat_item_producer>
+    <sys_translated_text action="delete_multiple" query="documentkey=c4c43b34dbe7a3001e22c2450596191c"/>
+    <fx_price action="delete_multiple" query="id=c4c43b34dbe7a3001e22c2450596191c"/>
+    <fx_price action="INSERT_OR_UPDATE">
+        <amount>0</amount>
+        <currency display_value="USD">USD</currency>
+        <field>price</field>
+        <id>c4c43b34dbe7a3001e22c2450596191c</id>
+        <parent/>
+        <reference_amount>0</reference_amount>
+        <reference_currency display_value="USD">USD</reference_currency>
+        <sys_created_by>chris.webster</sys_created_by>
+        <sys_created_on>2019-02-08 20:00:41</sys_created_on>
+        <sys_id>00c43b34dbe7a3001e22c2450596191e</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>chris.webster</sys_updated_by>
+        <sys_updated_on>2019-02-08 20:00:41</sys_updated_on>
+        <table>sc_cat_item_producer</table>
+        <type>calculated</type>
+    </fx_price>
+    <fx_price action="INSERT_OR_UPDATE">
+        <amount>0</amount>
+        <currency display_value="USD">USD</currency>
+        <field>recurring_price</field>
+        <id>c4c43b34dbe7a3001e22c2450596191c</id>
+        <parent/>
+        <reference_amount>0</reference_amount>
+        <reference_currency display_value="USD">USD</reference_currency>
+        <sys_created_by>chris.webster</sys_created_by>
+        <sys_created_on>2019-02-08 20:00:41</sys_created_on>
+        <sys_id>04c43b34dbe7a3001e22c24505961920</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_updated_by>chris.webster</sys_updated_by>
+        <sys_updated_on>2019-02-08 20:00:41</sys_updated_on>
+        <table>sc_cat_item_producer</table>
+        <type>calculated</type>
+    </fx_price>
+</record_update>

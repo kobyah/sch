@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_snc_demodata_wiz.wizard</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description>Wizard opens a wormhole which transports data records into the past or the future, depending on what you're looking to accomplish.</description>
+        <name>wizard</name>
+        <script><![CDATA[var wizard = Class.create();
+wizard.prototype = {
+	TBL_collection: 'x_snc_demodata_wiz_data_set',
+	TBL_collection_table: 'x_snc_demodata_wiz_data_set_table',
+	TBL_warp: 'x_snc_demodata_wiz_run_log',
+	TBL_changed_rec: 'x_snc_demodata_wiz_changed_record',
+	DICT_ELEMENT: 'element',
+	F_BASE_DT: 'base_date_time', // field on TBL_collection
+	F_COLLECTION: 'data_set',
+	F_FIELDS: 'fields',
+	F_TABLE: 'table',
+	F_CONDITIONS: 'condition',
+	F_START: 'run_start_on',
+	F_END: 'run_end_on',
+	F_ORDER: 'order',
+	F_BASE_TABLE: 'base_table',
+	F_BASE_DT_FIELD: 'base_dt_field',
+	F_NEW_BASE_DT: 'new_date_time', // field on TBL_warp
+	F_DOC_ID: 'document_id',
+	F_STATE: 'state',
+	F_WIZ_RUN: 'wizard_run',
+	STR_SUCCESS: 'successful',
+	STR_FAIL: 'failed',
+	STR_IN_PROGRESS: 'in progress',
+	STR_COMPLETE: 'complete',
+	STR_NO_CHANGE: 'no change',
+	Collection: null, // sys_id on TBL_collection
+	CollectionBaseTable: null,
+	CollectionBaseDTField: null,
+	DestinationTime: null,
+	MasterDuration: null, // GlideDuration object
+	WarpGlideRecord: null,
+	// master configuration, it's set up this way so if you want to extend this
+	// class and statically set Collection or DestinationTime, you should be 
+	// able to do that
+	// @TODO: make sure the above is actually *true* 
+	initialize: function( Collection , DestinationTime ) {
+		Collection = Collection || this.Collection;
+		DestinationTime = DestinationTime || this.DestinationTime;
+		if( ! Collection || ! DestinationTime )
+			throw new Exception('Error encountered while instantiating wormhole: Collection and DestinationTime are required to initialize the wormhole class.');
+
+		// set our master variables
+		this.Collection = Collection;
+		this.DestinationTime = DestinationTime;		
+
+		// derive collection variables
+		var gr = new GlideRecord( this.TBL_collection );
+		gr.get( this.Collection );
+		this.CollectionBaseTable = gr.getValue( this.F_BASE_TABLE );
+		this.CollectionBaseDTField = gr[this.F_BASE_DT_FIELD].getRefRecord().getValue( this.DICT_ELEMENT );
+		gs.info( this.CollectionBaseTable + " // " + this.CollectionBaseDTField );
+		// run the computation 
+		this.computeMasterDuration();
+	},
+	setWarp: function( warp_sys_id ){
+		warp_sys_id = warp_sys_id || null;
+		if( warp_sys_id ){
+			var gr = new GlideRecord( this.TBL_warp );
+			if( gr.get( warp_sys_id ) ){
+				this.WarpGlideRecord = gr;
+				this.WarpGlideRecord.setValue( this.F_STATE , this.STR_IN_PROGRESS );
+				this.WarpGlideRecord.setValue( this.F_START , new GlideDateTime().getValue());
+				return this.WarpGlideRecord.update();
+			}
+		}
+	},
+	// compute the difference between the base time and the destination time
+	// i.e. establish the exit point of the wormhole
+	computeMasterDuration: function(){
+		// get the collection record
+		var gr = new GlideRecord( this.TBL_collection );
+		gr.get( this.Collection );
+		if( gr.getRowCount() > 0 ){	// make sure we have something
+			// find the data set table containing the base table entry			
+			var colTbl = new GlideRecord( this.TBL_collection_table );
+			colTbl.addQuery( this.F_COLLECTION , this.Collection );
+			colTbl.addQuery( this.F_TABLE , this.CollectionBaseTable );
+			colTbl.orderBy( this.F_ORDER );
+			colTbl.query();
+			if( colTbl.next() ){
+				var filter = colTbl.getValue( this.F_CONDITIONS );
+				/*var ga = new GlideAggregate( this.CollectionBaseTable );
+				ga.addEncodedQuery( filter );
+				ga.addNotNullQuery( this.CollectionBaseDTField ); // to prevent null results on the aggregate
+				ga.addAggregate('MIN' , this.CollectionBaseDTField );
+				ga.query();
+				gs.info( ga.getAggregate('MIN') );
+				var baseDt = ga.getAggregate('MIN');*/
+				var grt = new GlideRecord( this.CollectionBaseTable );
+				if( filter !== null && filter.length > 0 )
+					grt.addEncodedQuery( filter );
+				grt.addNotNullQuery( this.CollectionBaseDTField );
+				grt.orderBy( this.CollectionBaseDTField );
+				grt.setLimit(1);
+				grt.query();
+				if( grt.next() ){
+					var baseDt = grt.getValue( this.CollectionBaseDTField );
+					if( baseDt ){
+						// we found our base date/time, now compute the master duration
+						var base = new GlideDateTime(baseDt).getLocalDate();
+						var dest = new GlideDateTime( this.DestinationTime );
+						var dur = GlideDateTime.subtract( base , dest );
+						// round the duration off to the nearest day (ensure no hour shift is taking place)
+						var timepart = new GlideDuration( '0 ' + dur.getByFormat('HH:mm:ss') );
+						var dur_round = dur.subtract(timepart); 
+						// save the master duration
+						this.MasterDuration = dur_round;
+					}
+				} // else: base table has no records matching this filter
+			} else {
+				// no data set table found which matches the base table selection, this is unexpected
+				throw new Exception('Invalid base table selection, cannot continue!');
+			}
+			/* OLD CODE, LEFT HERE FOR REFERENCE ONLY
+			var t = this.computeBaseTime(); // get the base time from the last warp
+			
+
+			if( t === false ) // no warps for this collection, use the collection base
+				t = gr.getValue( this.F_BASE_DT );
+
+			if( t.length > 0 ){ // make sure we have a base dt to work with
+				var base = new GlideDateTime(t);
+				var dest = new GlideDateTime( this.DestinationTime );
+				var dur = GlideDateTime.subtract( base , dest );
+				// save the master duration
+				this.MasterDuration = dur;
+			}*/
+		}
+	},
+	// compute the base time of the Collection, 
+	// taking into account the last completed warp 
+	computeBaseTime: function(){
+		var warpGr = new GlideRecord( this.TBL_warp );
+		warpGr.addQuery( this.F_COLLECTION , this.Collection );
+		warpGr.orderByDesc( this.F_END );
+		warpGr.query();
+		if(warpGr.next())
+			return warpGr.getValue( this.F_NEW_BASE_DT );
+		else
+			return false;
+	},
+	// transform the tables as configured
+	transform: function() {
+		this._log( 'start' );
+		// preflight checks
+		// do we have a master duration?
+		if( ! this.MasterDuration ){
+			gs.error('An error occurred: No master duration could be calculated for this data set. Cannot continue.');
+			return;
+		}
+		// checks complete, execute!
+		var gr = new GlideRecord( this.TBL_collection_table );
+		gr.addQuery( this.F_COLLECTION , this.Collection );
+		gr.orderBy( this.F_ORDER );
+		gr.addActiveQuery();
+		gr.query();
+		while(gr.next()){ // loop over each table to process the records
+			var field_list = gr.getValue( this.F_FIELDS );
+			if( field_list.length > 0 ){
+				var field_arr = field_list.split(','); // array the field list
+				var table = gr.getValue( this.F_TABLE );
+				var filter = gr.getValue( this.F_CONDITIONS );
+				var target = new GlideRecord( table ); // this is our target table
+				if( filter !== null && filter.length > 0 )
+					target.addEncodedQuery( filter );
+				target.query();
+				if( target.hasNext() )
+					this._transformRecords( target , field_arr );
+			} else {
+				// error, throw an error
+				gs.error("Houston, we have a problem! This collection table record doesn't have any fields and can't be processed: " + gr.getUniqueValue());
+			}
+		}
+		this._log( 'end' );
+	},
+	// push these records into the wormhole	
+	_transformRecords: function( gr , fields ){
+		var tbl = gr.getTableName();
+		while( gr.next() ){
+			var sys_id = gr.getUniqueValue();
+			var updated = false;
+			for( var i = 0 ; i < fields.length ; i++ ){
+				var f = fields[i];
+				var old = gr.getValue( f );
+				if( old.length > 0 ){
+					// compute the new date time
+					var gdt = new GlideDateTime( old );
+					var old_obj = new GlideDuration( gdt.getNumericValue() );
+					var diff_obj = new GlideDuration(this.MasterDuration); // this makes a copy of the MasterDuration object
+					//diff_obj.add(gdt);
+					diff_obj.add(gdt.getNumericValue());
+					//diff_obj.add(old_obj);
+					
+					var new_dt = diff_obj.getValue();
+					gr.setValue(f , new_dt );
+					updated = true;
+				}
+			}
+			//gr.setWorkflow(false); // This doesn't work cross-scope, unfortunately
+			if( updated == true ){
+				var result = gr.update();
+				this._logRecord( tbl , sys_id , (result !== null) );
+			} else {
+				this._logRecord( tbl , sys_id , null );
+			}
+		}
+	},
+	_logRecord: function( table_name , sys_id , success ){
+		var runID = this.WarpGlideRecord.getUniqueValue();
+		if( runID ){
+			var gr = new GlideRecord( this.TBL_changed_rec );
+			gr.newRecord();
+			gr.setValue( this.F_WIZ_RUN , runID );
+			gr.setValue( this.F_TABLE , table_name );
+			gr.setValue( this.F_DOC_ID , sys_id );
+			if( success == true )
+				gr.setValue( this.F_STATE , this.STR_SUCCESS );
+			else if ( success == false )
+				gr.setValue( this.F_STATE , this.STR_FAIL );
+			else 
+				gr.setValue( this.F_STATE , this.STR_NO_CHANGE );
+			
+			gr.insert();
+		}
+	},
+	_log: function(event){
+		if( this.WarpGlideRecord ){
+			var a = this.WarpGlideRecord;
+			switch(event){
+				case 'start':
+					a.setValue(this.F_START , new GlideDateTime().getValue());
+					break;
+				case 'end':
+					a.setValue(this.F_STATE , this.STR_COMPLETE );
+					a.setValue(this.F_END , new GlideDateTime().getValue());
+					break;
+			}
+			a.update();
+		}
+	},
+	type: 'wizard'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>chris.webster</sys_created_by>
+        <sys_created_on>2019-02-08 19:27:00</sys_created_on>
+        <sys_id>72ac277cdba7a3001e22c245059619dc</sys_id>
+        <sys_mod_count>28</sys_mod_count>
+        <sys_name>wizard</sys_name>
+        <sys_package display_value="Demo Data Wizard" source="x_snc_demodata_wiz">e0d72f74dba7a3001e22c24505961989</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Demo Data Wizard">e0d72f74dba7a3001e22c24505961989</sys_scope>
+        <sys_update_name>sys_script_include_72ac277cdba7a3001e22c245059619dc</sys_update_name>
+        <sys_updated_by>chris.webster</sys_updated_by>
+        <sys_updated_on>2019-02-14 16:37:26</sys_updated_on>
+    </sys_script_include>
+</record_update>
